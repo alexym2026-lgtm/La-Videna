@@ -1,0 +1,691 @@
+/* =========================================================
+   COMPLEJO DEPORTIVO LA VIDENA - estilos.css
+   Enfoque Mobile First: los estilos base son para celulares
+   y los @media (min-width) agregan mejoras en pantallas mayores.
+   ========================================================= */
+
+/* ---------- 1. VARIABLES Y REINICIO ---------- */
+:root {
+    --verde: #1faa4b;
+    --verde-oscuro: #0f6b2e;
+    --verde-claro: #e8f6ec;
+    --oscuro: #0e1a14;
+    --oscuro-2: #16261d;
+    --blanco: #ffffff;
+    --gris: #f3f5f4;
+    --texto: #1d2a22;
+    --acento: #ffd23f;
+    --radio: 14px;
+    --sombra: 0 4px 14px rgba(0, 0, 0, 0.15);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 4.5rem; /* evita que el menú fijo tape los títulos */
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.6;
+    color: var(--texto);
+    background: var(--blanco);
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+ul { list-style: none; }
+a { color: inherit; text-decoration: none; }
+
+/* ---------- 2. UTILIDADES ---------- */
+.contenedor {
+    width: 100%;
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.texto-centrado { text-align: center; }
+
+.solo-lectores {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+}
+
+.saltar-contenido {
+    position: absolute;
+    left: 1rem;
+    top: -4rem;
+    background: var(--acento);
+    color: var(--oscuro);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    z-index: 100;
+}
+.saltar-contenido:focus-visible { top: 0.5rem; }
+
+/* Foco visible para teclado */
+a:focus-visible,
+.menu-check:focus-visible + .menu-boton {
+    outline: 3px solid var(--acento);
+    outline-offset: 3px;
+}
+
+/* ---------- 3. ENCABEZADO Y MENÚ ---------- */
+.encabezado {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--oscuro);
+    color: var(--blanco);
+    border-bottom: 3px solid var(--verde);
+}
+
+.barra {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    min-height: 4rem;
+}
+
+.marca {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+}
+.marca-pequena {
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--acento);
+}
+.marca-nombre {
+    font-size: 1.5rem;
+    font-weight: bold;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+/* Checkbox oculto: solo sirve para guardar el estado abierto/cerrado */
+.menu-check {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.menu-boton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 2px solid var(--verde);
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* Icono de hamburguesa dibujado con un span y sus pseudoelementos */
+.menu-icono,
+.menu-icono::before,
+.menu-icono::after {
+    display: block;
+    width: 1.4rem;
+    height: 3px;
+    background: var(--blanco);
+    border-radius: 2px;
+    transition: transform 0.3s, background 0.3s;
+}
+.menu-icono { position: relative; }
+.menu-icono::before,
+.menu-icono::after {
+    content: "";
+    position: absolute;
+    left: 0;
+}
+.menu-icono::before { top: -7px; }
+.menu-icono::after { top: 7px; }
+
+/* Cuando el checkbox está marcado, el icono se convierte en una X */
+.menu-check:checked + .menu-boton .menu-icono { background: transparent; }
+.menu-check:checked + .menu-boton .menu-icono::before { transform: translateY(7px) rotate(45deg); }
+.menu-check:checked + .menu-boton .menu-icono::after { transform: translateY(-7px) rotate(-45deg); }
+
+/* Menú móvil: oculto por defecto, aparece al marcar el checkbox */
+.menu {
+    display: none;
+    width: 100%;
+    padding-bottom: 0.75rem;
+}
+.menu-check:checked ~ .menu { display: block; }
+
+.menu a {
+    display: block;
+    padding: 0.75rem 0.5rem;
+    border-bottom: 1px solid var(--oscuro-2);
+    transition: color 0.3s, background 0.3s, padding-left 0.3s;
+}
+.menu a:hover {
+    color: var(--acento);
+    background: var(--oscuro-2);
+    padding-left: 1rem;
+}
+
+/* ---------- 4. PORTADA ---------- */
+.portada {
+    position: relative;
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    color: var(--blanco);
+    overflow: hidden;
+}
+
+.portada-imagen {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    z-index: -2;
+}
+
+/* Capa oscura con gradiente para que el texto se lea bien */
+.portada::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(14, 26, 20, 0.55), rgba(14, 26, 20, 0.85));
+    z-index: -1;
+}
+
+.portada-contenido {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+    animation: entrada 0.9s ease-out both;
+}
+
+.portada-etiqueta {
+    display: inline-block;
+    background: var(--verde);
+    padding: 0.25rem 0.8rem;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+}
+
+.portada h1 {
+    font-size: 2.2rem;
+    line-height: 1.1;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+.portada-frase {
+    margin: 1rem 0 1.5rem;
+    font-size: 1.1rem;
+    max-width: 36rem;
+}
+
+.portada-botones {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+/* ---------- 5. BOTONES ---------- */
+.boton {
+    display: inline-block;
+    font: inherit;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    padding: 0.85rem 1.6rem;
+    border-radius: 999px;
+    font-weight: bold;
+    border: 2px solid transparent;
+    transition: background 0.3s, color 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+.boton:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--sombra);
+}
+.boton-primario { background: var(--verde); color: var(--blanco); }
+.boton-primario:hover { background: var(--acento); color: var(--oscuro); }
+.boton-secundario { border-color: var(--blanco); color: var(--blanco); }
+.boton-secundario:hover { background: var(--blanco); color: var(--oscuro); }
+
+/* ---------- 6. SECCIONES ---------- */
+.seccion { padding: 3rem 0; }
+.seccion-gris { background: var(--gris); }
+.seccion-oscura {
+    background: linear-gradient(135deg, var(--oscuro), var(--verde-oscuro));
+    color: var(--blanco);
+}
+
+.titulo-seccion {
+    font-size: 1.9rem;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+}
+/* Línea verde decorativa debajo del título */
+.titulo-seccion::after {
+    content: "";
+    display: block;
+    width: 3.5rem;
+    height: 4px;
+    background: var(--verde);
+    margin-top: 0.4rem;
+    border-radius: 2px;
+}
+.texto-centrado .titulo-seccion::after { margin-left: auto; margin-right: auto; }
+
+.subtitulo-seccion { margin-bottom: 2rem; color: #4a5a50; }
+
+.titulo-grupo {
+    font-size: 1.3rem;
+    margin: 1.5rem 0 1rem;
+    color: var(--verde-oscuro);
+}
+
+/* ---------- 7. TARJETAS DE CANCHAS ---------- */
+.rejilla-canchas {
+    display: grid;
+    grid-template-columns: 1fr;   /* móvil: una columna */
+    gap: 1.5rem;
+}
+
+.tarjeta {
+    background: var(--blanco);
+    border-radius: var(--radio);
+    overflow: hidden;
+    box-shadow: var(--sombra);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.tarjeta:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+}
+
+.tarjeta-imagen {
+    position: relative;
+    overflow: hidden;
+    height: 220px;
+}
+.tarjeta-imagen img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s;
+}
+.tarjeta:hover .tarjeta-imagen img { transform: scale(1.05); }
+
+/* Ajuste de encuadre por foto */
+.img-futsal1 { object-position: center 60%; }
+.img-futsal2 { object-position: center 50%; }
+.img-voley { object-position: center 65%; }
+
+.etiqueta {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    background: var(--oscuro);
+    color: var(--acento);
+    padding: 0.2rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.tarjeta-cuerpo { padding: 1.25rem; }
+.tarjeta-cuerpo h4 { font-size: 1.3rem; margin-bottom: 0.4rem; }
+.tarjeta-cuerpo p { color: #4a5a50; margin-bottom: 1rem; }
+
+/* Precios día / noche */
+.precios {
+    display: flex;
+    gap: 0.75rem;
+}
+.precios li {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.6rem;
+    border-radius: 10px;
+    background: var(--verde-claro);
+    border: 2px solid var(--verde);
+}
+.precios li:last-child {
+    background: var(--oscuro);
+    border-color: var(--oscuro);
+    color: var(--blanco);
+}
+.precio-turno { font-size: 0.85rem; font-weight: bold; text-transform: uppercase; }
+.precio-valor { font-size: 1.6rem; font-weight: bold; }
+.precios li:last-child .precio-valor { color: var(--acento); }
+
+/* ---------- 8. TABLA DE TARIFAS ---------- */
+/* Si la tabla no cabe en pantallas muy pequeñas, solo se desplaza ella */
+.tabla-contenedor {
+    overflow-x: auto;
+    border-radius: var(--radio);
+    box-shadow: var(--sombra);
+}
+
+.tabla-tarifas {
+    width: 100%;
+    min-width: 20rem;
+    border-collapse: collapse;
+    background: var(--blanco);
+}
+.tabla-tarifas th,
+.tabla-tarifas td {
+    padding: 0.9rem 0.75rem;
+    text-align: center;
+    border-bottom: 1px solid #dfe5e1;
+}
+.tabla-tarifas thead th {
+    background: var(--oscuro);
+    color: var(--blanco);
+    text-transform: uppercase;
+    font-size: 0.9rem;
+}
+.tabla-tarifas tbody th { text-align: left; }
+.tabla-tarifas td { white-space: nowrap; font-size: 1.2rem; font-weight: bold; color: var(--verde-oscuro); }
+.tabla-tarifas tbody tr { transition: background 0.3s; }
+.tabla-tarifas tbody tr:hover { background: var(--verde-claro); }
+.tabla-tarifas tbody tr:nth-child(even) { background: var(--gris); }
+.tabla-tarifas tbody tr:nth-child(even):hover { background: var(--verde-claro); }
+
+.nota {
+    margin-top: 1rem;
+    padding: 0.75rem 1rem;
+    border-left: 4px solid var(--acento);
+    background: #fff9e0;
+    font-size: 0.95rem;
+}
+
+/* ---------- 9. SOBRE EL COMPLEJO ---------- */
+.texto-info {
+    max-width: 42rem;
+    margin: 1rem auto 0;
+    font-size: 1.1rem;
+}
+
+/* ---------- 10. CONTACTO ---------- */
+.rejilla-contacto {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+.dato {
+    background: var(--blanco);
+    padding: 1.25rem;
+    border-radius: var(--radio);
+    border-top: 4px solid var(--verde);
+    box-shadow: var(--sombra);
+}
+.dato h3 { margin-bottom: 0.3rem; }
+.pendiente { color: #5b6b61; font-style: italic; }
+
+/* ---------- 11. PIE DE PÁGINA ---------- */
+.pie {
+    background: var(--oscuro);
+    color: var(--blanco);
+    border-top: 3px solid var(--verde);
+    padding: 2rem 0 1.5rem;
+}
+.pie-contenido {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    text-align: center;
+}
+.pie-marca { font-size: 1.3rem; font-weight: bold; text-transform: uppercase; }
+.pie ul { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem 1.5rem; }
+.pie a { transition: color 0.3s; }
+.pie a:hover { color: var(--acento); }
+.pie-derechos { font-size: 0.85rem; color: #b8c4bc; }
+
+/* ---------- 12. ANIMACIÓN DE ENTRADA ---------- */
+@keyframes entrada {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================================
+   MEDIA QUERIES (Mobile First: se usa min-width)
+   ========================================================= */
+
+/* Celulares grandes / tablets pequeñas */
+@media (min-width: 600px) {
+    .portada h1 { font-size: 3rem; }
+    .portada-botones { flex-direction: row; }
+    .rejilla-contacto { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* Tablets: 768px */
+@media (min-width: 768px) {
+    .contenedor { padding: 0 1.5rem; }
+    .rejilla-canchas { grid-template-columns: repeat(2, 1fr); }
+    .tarjeta-imagen { height: 240px; }
+
+    /* Tarjeta ancha de vóley y básquet: imagen a la izquierda, texto a la derecha */
+    .tarjeta-ancha { flex-direction: row; }
+    .tarjeta-ancha .tarjeta-imagen { flex: 1 1 50%; height: auto; min-height: 280px; }
+    .tarjeta-ancha .tarjeta-cuerpo { flex: 1 1 50%; align-self: center; padding: 2rem; }
+}
+
+/* Laptops: 1024px - el menú pasa a ser horizontal */
+@media (min-width: 1024px) {
+    .menu-boton { display: none; }
+
+    .menu {
+        display: block;
+        width: auto;
+        padding-bottom: 0;
+    }
+    .menu ul { display: flex; gap: 0.5rem; }
+    .menu a {
+        border-bottom: 0;
+        border-radius: 999px;
+        padding: 0.5rem 1.1rem;
+    }
+    .menu a:hover { padding-left: 1.1rem; background: var(--verde); color: var(--blanco); }
+
+    .portada { min-height: 90vh; }
+    .portada h1 { font-size: 4rem; }
+    .seccion { padding: 4.5rem 0; }
+    .rejilla-contacto { grid-template-columns: repeat(4, 1fr); }
+    .pie-contenido { flex-direction: row; justify-content: space-between; text-align: left; }
+}
+
+/* Escritorio grande: 1440px */
+@media (min-width: 1440px) {
+    .contenedor { max-width: 1280px; }
+    .portada h1 { font-size: 4.5rem; }
+}
+
+/* Movimiento reducido: se quitan las animaciones no esenciales */
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+    .tarjeta:hover,
+    .boton:hover { transform: none; }
+}
+
+/* =========================================================
+   SECCIÓN DE RESERVAS
+   ========================================================= */
+.selector { border: 0; margin-bottom: 2.5rem; min-width: 0; }
+.selector-leyenda {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: var(--verde-oscuro);
+    margin-bottom: 1rem;
+}
+
+.rejilla-opciones {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+.opcion { display: flex; flex-direction: column; gap: 0.75rem; }
+
+/* El radio real se oculta, pero sigue siendo accesible con el teclado */
+.opcion-radio {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.opcion-tarjeta {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    background: var(--blanco);
+    border: 3px solid transparent;
+    border-radius: var(--radio);
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: var(--sombra);
+    transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+}
+.opcion-tarjeta:hover { transform: translateY(-5px); box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25); }
+
+.opcion-radio:checked + .opcion-tarjeta { border-color: var(--verde); box-shadow: 0 0 0 4px var(--verde-claro), var(--sombra); }
+.opcion-radio:focus-visible + .opcion-tarjeta { outline: 3px solid var(--acento); outline-offset: 3px; }
+
+.opcion-imagen { position: relative; display: block; height: 180px; overflow: hidden; }
+.opcion-imagen img { width: 100%; height: 100%; object-fit: cover; }
+
+/* Marca que solo aparece cuando la tarjeta está seleccionada (no depende solo del color) */
+.opcion-marca {
+    position: absolute;
+    right: 0.75rem;
+    bottom: 0.75rem;
+    background: var(--verde);
+    color: var(--blanco);
+    padding: 0.2rem 0.7rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.3s, transform 0.3s;
+}
+.opcion-radio:checked + .opcion-tarjeta .opcion-marca { opacity: 1; transform: translateY(0); }
+
+.opcion-cuerpo { display: block; padding: 1rem; }
+.opcion-nombre { display: block; font-size: 1.2rem; font-weight: bold; margin-bottom: 0.75rem; }
+
+.precio-caja {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.5rem;
+    border-radius: 10px;
+    background: var(--verde-claro);
+    border: 2px solid var(--verde);
+}
+.precio-noche { background: var(--oscuro); border-color: var(--oscuro); color: var(--blanco); }
+.precio-noche .precio-valor { color: var(--acento); }
+
+.boton-completo { width: 100%; }
+
+/* Formulario */
+.reserva-formulario {
+    background: var(--blanco);
+    padding: 1.25rem;
+    border-radius: var(--radio);
+    box-shadow: var(--sombra);
+    border-top: 4px solid var(--verde);
+}
+.reserva-formulario .titulo-grupo { margin-top: 0; }
+
+.aviso-demo {
+    background: #fff9e0;
+    border-left: 4px solid var(--acento);
+    padding: 0.75rem 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.formulario {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+.campo { display: flex; flex-direction: column; gap: 0.35rem; }
+.campo label { font-weight: bold; }
+.opcional { font-weight: normal; color: #5b6b61; }
+
+.campo input,
+.campo select,
+.campo textarea {
+    width: 100%;
+    min-height: 3rem;          /* alto cómodo para tocar con el dedo */
+    padding: 0.7rem 0.9rem;
+    font: inherit;
+    border: 2px solid #c5d0c9;
+    border-radius: 10px;
+    background: var(--blanco);
+    color: var(--texto);
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+.campo textarea { resize: vertical; }
+.campo input:focus-visible,
+.campo select:focus-visible,
+.campo textarea:focus-visible {
+    outline: none;
+    border-color: var(--verde);
+    box-shadow: 0 0 0 4px var(--verde-claro);
+}
+/* Marca los campos con datos inválidos solo después de que el usuario escribió algo */
+.campo input:not([type="date"]):not(:placeholder-shown):invalid { border-color: #c0392b; }
+
+.reserva-formulario .nota { margin-top: 1.25rem; }
+
+.pago {
+    margin-top: 1.5rem;
+    padding: 1.25rem;
+    border-radius: var(--radio);
+    background: var(--oscuro);
+    color: var(--blanco);
+    border-left: 6px solid var(--acento);
+}
+.pago h3 { color: var(--acento); margin-bottom: 0.4rem; }
+
+@media (min-width: 768px) {
+    .rejilla-opciones { grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+    .reserva-formulario { padding: 2rem; }
+    .formulario { grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
+    .campo-completo { grid-column: 1 / -1; }
+    .boton-completo { width: auto; }
+    .opcion .boton-completo { width: 100%; }
+}
